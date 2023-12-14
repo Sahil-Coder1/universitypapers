@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create File</title>
+   ]     <style>
+    body {
+  font-family: sans-serif;
+}
+
+#file-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+label {
+  width: 100px;
+  text-align: right;
+}
+
+input[type="text"], textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Create Your File</h1>
+    <form id="file-form">
+        <label for="filename">Filename:</label>
+        <input type="text" id="filename" name="filename" placeholder="Enter filename">
+        <br>
+        <label for="filecontent">Content:</label>
+        <textarea id="filecontent" name="filecontent" rows="5" placeholder="Enter your text"></textarea>
+        <br>
+        <button type="submit">Create File</button>
+    </form>
+    <script>
+    const fileForm = document.getElementById('file-form');
+
+fileForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const filename = document.getElementById('filename').value;
+  const fileContent = document.getElementById('filecontent').value;
+
+  // Check for valid filename and content
+  if (!filename || !fileContent) {
+    alert('Please enter both filename and content!');
+    return;
+  }
+
+  // Create a Blob object with the file content
+  const blob = new Blob([fileContent], { type: 'text/plain' });
+
+  // Create a temporary download link
+  const downloadLink = document.createElement('a');
+  downloadLink.href = window.URL.createObjectURL(blob);
+  downloadLink.download = filename;
+
+  // Trigger the download
+  downloadLink.click();
+
+  // Clean up temporary link
+  window.URL.revokeObjectURL(downloadLink.href);
+
+  // Clear form fields
+  document.getElementById('filename').value = '';
+  document.getElementById('filecontent').value = '';
+});
+
+    </script>
+</body>
+</html>
